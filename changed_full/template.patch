@@ -1,0 +1,139 @@
+Index: out/basic/tpl/page/checkout/basket.tpl
+===================================================================
+--- out/basic/tpl/page/checkout/basket.tpl
++++ out/basic/tpl/page/checkout/basket.tpl
+@@ -24,6 +24,7 @@
+     [{if $oView->isLowOrderPrice() }]
+       <div class="minorderprice">[{ oxmultilang ident="BASKET_MINORDERPRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
+     [{else}]
++  [{block name="basket_btn_next_top"}]
+     <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+       <div>
+           [{ $oViewConf->getHiddenSid() }]
+@@ -33,6 +34,7 @@
+           </div>
+       </div>
+     </form>
++  [{/block}]
+     [{/if}]
+   </div>
+ 
+@@ -432,6 +434,7 @@
+     [{if $oView->isLowOrderPrice() }]
+       <div class="minorderprice">[{ oxmultilang ident="BASKET_MINORDERPRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
+     [{else}]
++  [{block name="basket_btn_next_bottom"}]
+     <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+       <div>
+           [{ $oViewConf->getHiddenSid() }]
+@@ -442,7 +445,7 @@
+       </div>
+     </form>
+     [{/if}]
+-
++  [{/block}]
+   </div>
+ 
+   [{if $oView->getBasketSimilarList() }]
+Index: out/admin/tpl/order_main.tpl
+===================================================================
+--- out/admin/tpl/order_main.tpl
++++ out/admin/tpl/order_main.tpl
+@@ -148,17 +148,24 @@
+         <input type="hidden" name="oxid" value="[{ $oxid }]">
+         <input type="hidden" name="editval[oxorder__oxid]" value="[{ $oxid }]">
+
+-
++            [{ if $edit->oxorder__oxpaymenttype->value != "rakuten" }]
+                 <select name="setDelSet" class="editinput" style="width: 135px;">
+                 <option value="">----</option>
+                 [{foreach from=$oShipSet key=sShipSetId item=oShipSet}]
+                 <option value="[{ $sShipSetId }]" [{ if $edit->oxorder__oxdeltype->value == $sShipSetId }]SELECTED[{/if}]>[{$oShipSet->oxdeliveryset__oxtitle->value}]</option>
+                 [{/foreach}]
+                 </select>
++            [{else}]
++                [{foreach from=$oShipSet key=sShipSetId item=oShipSet}]
++                    [{ if $edit->oxorder__oxdeltype->value == $sShipSetId }][{$oShipSet->oxdeliveryset__oxtitle->value}][{/if}]
++                [{/foreach}]
++            [{/if}]
+                 [{ oxinputhelp ident="HELP_ORDER_MAIN_DELTYPE" }]
+             </td>
+             <td>
+-                <input type="submit" name="updateShipping" id="updateShipping" value="[{ oxmultilang ident="ORDER_MAIN_UPDATE_DELPAY" }]">
++                [{ if $edit->oxorder__oxpaymenttype->value != "rakuten" }]
++                    <input type="submit" name="updateShipping" id="updateShipping" value="[{ oxmultilang ident="ORDER_MAIN_UPDATE_DELPAY" }]">
++                [{/if}]
+             </td>
+         </tr>
+         <tr>
+@@ -166,6 +173,7 @@
+             <td class="edittext">
+
+         </form>
++        [{ if $edit->oxorder__oxpaymenttype->value != "rakuten" }]
+         <form name="myedit3" id="myedit3" action="[{ $oViewConf->getSelfLink() }]" method="post">
+         [{ $oViewConf->getHiddenSid() }]
+         <input type="hidden" name="cur" value="[{ $oCurr->id }]">
+@@ -189,6 +197,7 @@
+             <td>
+                 <input type="submit" name="updatePayment" id="updatePayment" value="[{ oxmultilang ident="ORDER_MAIN_UPDATE_DELPAY" }]">
+             </td>
++            [{/if}]
+         </tr>
+         </table>
+         <br />
+@@ -223,6 +232,7 @@
+
+         </form>
+
++        [{ if $edit->oxorder__oxpaymenttype->value != "rakuten" }]
+         <form name="sendorder" id="sendorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
+         [{ $oViewConf->getHiddenSid() }]
+         <input type="hidden" name="cur" value="[{ $oCurr->id }]">
+@@ -239,7 +249,9 @@
+             </td>
+         </tr>
+         </form>
++        [{/if}]
+
++        [{ if $edit->oxorder__oxpaymenttype->value != "rakuten" }]
+         <form name="resetorder" id="resetorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
+         [{ $oViewConf->getHiddenSid() }]
+         <input type="hidden" name="cur" value="[{ $oCurr->id }]">
+@@ -255,7 +267,7 @@
+             </td>
+         </tr>
+         </form>
+-
++        [{/if}]
+
+         </table>
+Index: out/admin/tpl/order_overview.tpl
+===================================================================
+--- out/admin/tpl/order_overview.tpl
++++ out/admin/tpl/order_overview.tpl
+@@ -242,6 +242,7 @@
+         <br>
+         [{ if $edit }]
+         <table cellspacing="0" cellpadding="0" border="0">
++        [{if !$oView->canResetShippingDate() }]
+         <form name="sendorder" id="sendorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
+         [{ $oViewConf->getHiddenSid() }]
+         <input type="hidden" name="cl" value="order_overview">
+@@ -257,6 +258,7 @@
+             </td>
+         </tr>
+         </form>
++        [{/if}]
+         <tr>
+             <td class="edittext">
+             </td>
+@@ -268,7 +270,7 @@
+             [{/if}]
+             </td>
+         </tr>
+-        [{ if $oView->canResetShippingDate() }]
++        [{ if $oView->canResetShippingDate() AND $edit->oxorder__oxpaymenttype->value != "rakuten" }]
+         <form name="resetorder" id="resetorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
+         [{ $oViewConf->getHiddenSid() }]
+         <input type="hidden" name="cl" value="order_overview">

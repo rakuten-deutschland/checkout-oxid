@@ -1,0 +1,45 @@
+Release Notes for Rakuten Checkout ver. 1.0.4
+----------------------------------------------
+15.05.2012
+
+*** Bug Fixes ***
+(COE-17)  Shipment information is not being sent to Rakuten Checkout
+(COE-18)  Inaccurate order information for order status 1
+(COE-19)  Orders - Tab "Main" - Shipped with field empty
+
+Release Notes for Rakuten Checkout ver. 1.0.3
+----------------------------------------------
+16.01.2012
+
+*** Rebranding ***
+( ) Rebranded checkout module to Rakuten Checkout
+
+
+Release Notes for Tradoria Checkout ver. 1.0.2
+----------------------------------------------
+18.11.2011
+
+*** Bug Fixes ***
+(#) Fixed issue with sending non-Tradoria order
+    shipments to Tradoria Checkout gateway
+
+
+Release Notes for Tradoria Checkout ver. 1.0.1
+----------------------------------------------
+16.11.2011
+
+*** Minor Changes ***
+(^) Changed URL of Tradoria Checkout sandbox server
+
+
+Release Notes for Tradoria Checkout ver. 1.0.0
+----------------------------------------------
+15.11.2011
+
+*** Major Features ***
+(+) Integration with Tradoria Checkout
+(+) Configuration of the module in the back-end
+(+) Support of Standard and Inline integration methods
+(+) Support of order creation callbacks
+(+) Support of status updates callbacks
+(+) Support of shipment calls
