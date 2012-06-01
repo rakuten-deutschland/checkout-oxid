@@ -16,40 +16,12 @@
 3. Go to the admin -> Master Settings -> Core Settings -> System -> Modules and add the
    following lines there:
 
-   oxbasket => rakuten/rakuten_checkout&rakuten/rakuten_rope
-   order_overview => rakuten/rakuten_shiporder
-   oxsession => rakuten/rakuten_session
+   * oxbasket => rakuten/rakuten_checkout&rakuten/rakuten_rope
+   * order_overview => rakuten/rakuten_shiporder
+   * oxsession => rakuten/rakuten_session
 
-4. Go to the admin -> Shop Settings -> Rakuten Checkout, enable and configure the module;
+4. Go to Oxid shop install path/tmp and clear cached smarty templates;
 
-5. Enjoy!
+5. Go to the admin -> Shop Settings -> Rakuten Checkout, enable and configure the module;
 
-
-          UPGRADE INSTRUCTIONS
-          To upgrade from Tradoria Checkout ver.1.0.2
-
-1. Disable old Tradoria Checkout module via admin -> Shop Settings -> Tradoria Checkout;
-
-2. Note down on the paper or copy&paste all Tradoria Checkout settings, you won't be able
-   to access them later;
-
-3. Copy contents from folder "copy_this" to the root of your Oxid store, confirm all
-   overwrites;
-
-4. Go to the server to "tmp" folder and delete all contents (to flush Oxid cache);
-
-5. Go to the admin -> Master Settings -> Core Settings -> System -> Modules and replace
-   every word "tradoria" with "rakuten", at the end code snippet should look like the
-   following lines:
-
-   oxbasket => rakuten/rakuten_checkout&rakuten/rakuten_rope
-   order_overview => rakuten/rakuten_shiporder
-   oxsession => rakuten/rakuten_session
-
-6. Restart your browser (if it won't help and front-end won't be working properly try to
-   delete your cookies in the browser);
-
-7. Go to the admin -> Shop Settings -> Rakuten Checkout, enable and configure the module
-   with the settings you noted on step #2;
-
-8. Enjoy!
+6. Enjoy!
