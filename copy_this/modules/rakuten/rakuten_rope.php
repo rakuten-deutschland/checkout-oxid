@@ -2,17 +2,17 @@
 /**
  * Copyright (c) 2012, Rakuten Deutschland GmbH. All rights reserved.
  *
- *	Redistribution and use in source and binary forms, with or without
- *	modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 	 * Redistributions of source code must retain the above copyright
- *  	   notice, this list of conditions and the following disclaimer.
- * 	 * Redistributions in binary form must reproduce the above copyright
- *   	   notice, this list of conditions and the following disclaimer in the
- *   	   documentation and/or other materials provided with the distribution.
- * 	 * Neither the name of the Rakuten Deutschland GmbH nor the
- *   	   names of its contributors may be used to endorse or promote products
- *   	   derived from this software without specific prior written permission.
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Rakuten Deutschland GmbH nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -62,7 +62,7 @@ class rakuten_rope extends rakuten_rope_parent
     public function processRopeRequest($request)
     {
         $this->_request = $request;
-      
+
         try {
             $this->_request = new SimpleXMLElement(urldecode($request), LIBXML_NOCDATA);
 
@@ -160,7 +160,7 @@ class rakuten_rope extends rakuten_rope_parent
 
         foreach ($quoteItems as $item) {
             /** @var $item oxBasketItem */
-            $quoteItemsArray[(string)$item->getProductId()] = $item;
+            $quoteItemsArray[(string)$item->getArticle()->oxarticles__oxartnum->value] = $item;
             $quoteItemsSku[] = (string)$item->getProductId();
         }
 
@@ -238,9 +238,10 @@ class rakuten_rope extends rakuten_rope_parent
             return false;
         }
 
-        try {         
+        try {
             /** @var $oUser oxUser */
             $oUser = oxNew('oxuser');
+            $oUser->loadActiveUser();
 
             /** @var $oOrder oxOrder */
             $oOrder = oxNew('oxorder');
@@ -280,8 +281,6 @@ class rakuten_rope extends rakuten_rope_parent
             }
             $oUser->oxuser__oxsal       = new oxField($sGender);
 
-      
-
             $address = $this->_request->delivery_address; /** Shipping Address **/
 
             $oOrder->oxorder__oxdelcompany  = new oxField((string)$address->company);
@@ -294,7 +293,8 @@ class rakuten_rope extends rakuten_rope_parent
 
             $sCountryId = $oUser->getUserCountryId((string)$address->country);
             $oOrder->oxorder__oxdelcountryid= new oxField($sCountryId ? $sCountryId : (string)$address->country);
-          
+            // $oOrder->oxorder__oxdelcountry   = new oxField($oUser->getUserCountry($sCountryId));
+
             $oOrder->oxorder__oxdelstateid  = new oxField('');
             $oOrder->oxorder__oxdelzip      = new oxField((string)$address->zip_code);
             $oOrder->oxorder__oxdelfon      = new oxField((string)$address->phone);
@@ -311,7 +311,7 @@ class rakuten_rope extends rakuten_rope_parent
                     $sGender = '';
             }
             $oOrder->oxorder__oxdelsal      = new oxField($sGender);
-           
+
             $sGetChallenge = oxSession::getVar( 'sess_challenge' );
             $oOrder->setId($sGetChallenge);
 

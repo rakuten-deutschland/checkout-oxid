@@ -16,9 +16,9 @@
 3. Go to the admin -> Master Settings -> Core Settings -> System -> Modules and add the
    following lines there:
 
-   * oxbasket => rakuten/rakuten_checkout&rakuten/rakuten_rope
-   * order_overview => rakuten/rakuten_shiporder
-   * oxsession => rakuten/rakuten_session
+    oxbasket => rakuten/rakuten_checkout&rakuten/rakuten_rope
+    order_overview => rakuten/rakuten_shiporder
+    oxsession => rakuten/rakuten_session
 
 4. Go to Oxid shop install path/tmp and clear cached smarty templates;
 

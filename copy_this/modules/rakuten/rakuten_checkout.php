@@ -2,17 +2,17 @@
 /**
  * Copyright (c) 2012, Rakuten Deutschland GmbH. All rights reserved.
  *
- *	Redistribution and use in source and binary forms, with or without
- *	modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 	 * Redistributions of source code must retain the above copyright
- *  	   notice, this list of conditions and the following disclaimer.
- * 	 * Redistributions in binary form must reproduce the above copyright
- *   	   notice, this list of conditions and the following disclaimer in the
- *   	   documentation and/or other materials provided with the distribution.
- * 	 * Neither the name of the Rakuten Deutschland GmbH nor the
- *   	   names of its contributors may be used to endorse or promote products
- *   	   derived from this software without specific prior written permission.
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Rakuten Deutschland GmbH nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -75,7 +75,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
      */
     protected function _escapeStr($string)
     {
-        $string = mb_convert_encoding($string, 'UTF-8');
+        $string = mb_convert_encoding($string, 'UTF-8', 'auto');
         $string = str_replace('&', '&amp;', $string);
         return $string;
     }
@@ -89,7 +89,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
      */
     protected function _addCDATA($node, $value)
     {
-        $value = mb_convert_encoding($value, 'UTF-8');
+        $value = mb_convert_encoding($value, 'UTF-8', 'auto');
         $domNode = dom_import_simplexml($node);
         $domDoc = $domNode->ownerDocument;
         $domNode->appendChild($domDoc->createCDATASection($value));
@@ -103,7 +103,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
      * @throws Exception|oxException
      */
     public function getRedirectUrl($inline = false)
-    {      
+    {
 
         /**
          *  Create Rakuten Checkout Insert Cart XML request
@@ -152,7 +152,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
             $merchantCartItemsItemName = $merchantCartItemsItem->addChild('name');
             $this->_addCDATA($merchantCartItemsItemName, $item->getTitle());
 
-            $merchantCartItemsItem->addChild('sku', $this->_escapeStr($item->getProductId()));
+            $merchantCartItemsItem->addChild('sku', $this->_escapeStr($item->getArticle()->oxarticles__oxartnum->value));
             $merchantCartItemsItem->addChild('external_product_id');
             $merchantCartItemsItem->addChild('qty', $item->getAmount());
             $merchantCartItemsItem->addChild('unit_price', $item->getUnitPrice()->getBruttoPrice());
@@ -196,7 +196,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
          * Restrict invoice address to require private / commercial and by country
          */
         $billingAddressRestrictions->addChild('customer_type')->addAttribute('allow', $this->getConfig()->getShopConfVar('iRakutenBillingAddr', -1));
-        
+
         $aCountries = array();
 
         /** @var $oCountryList oxCountryList */
@@ -275,9 +275,9 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
     {
         try {
             $rockinUrl = $this->getRockinUrl();
-				/**
-				 * Setting the curl parameters. 
-				 */
+            /**
+             * Setting the curl parameters. 
+             */
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $rockinUrl);
 
@@ -306,7 +306,7 @@ class rakuten_checkout extends rakuten_checkout_parent /* extends oxbasket */
             oxUtilsView::getInstance()->addErrorToDisplay(sprintf('CURL Error #%s: %s', $e->getCode(), $e->getMessage()));
             return false;
         }
-        
+
         return $response;
     }
 

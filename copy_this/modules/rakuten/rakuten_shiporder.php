@@ -2,17 +2,17 @@
 /**
  * Copyright (c) 2012, Rakuten Deutschland GmbH. All rights reserved.
  *
- *	Redistribution and use in source and binary forms, with or without
- *	modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * 	 * Redistributions of source code must retain the above copyright
- *  	   notice, this list of conditions and the following disclaimer.
- * 	 * Redistributions in binary form must reproduce the above copyright
- *   	   notice, this list of conditions and the following disclaimer in the
- *   	   documentation and/or other materials provided with the distribution.
- * 	 * Neither the name of the Rakuten Deutschland GmbH nor the
- *   	   names of its contributors may be used to endorse or promote products
- *   	   derived from this software without specific prior written permission.
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Rakuten Deutschland GmbH nor the
+ *       names of its contributors may be used to endorse or promote products
+ *       derived from this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
@@ -23,7 +23,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-class rakuten_shiporder extends rakuten_shiporder_parent
+class rakuten_shiporder extends rakuten_shiporder_parent /* extends order_overview */
 {
     const ROCKIN_SHIPMENT_SANDBOX_URL   = 'https://sandbox.rakuten-checkout.de/rockin/shipment';
     const ROCKIN_SHIPMENT_LIVE_URL      = 'https://secure.rakuten-checkout.de/rockin/shipment';
@@ -67,9 +67,9 @@ class rakuten_shiporder extends rakuten_shiporder_parent
         /** In sendShipment() method **/
         $delSet = (oxConfig::getParameter( "setDelSet" )?oxConfig::getParameter( "setDelSet" ):'andere');
         $trackCode = oxConfig::getParameter( "oxorder__oxtrackcode" );
-        $xml->addChild('carrier_tracking_id', $delSet);
+        $xml->addChild('carrier_tracking_id', $delSet);//'andere'
         $xml->addChild('carrier_tracking_url');
-        $xml->addChild('carrier_tracking_code', $trackCode);
+        $xml->addChild('carrier_tracking_code', $trackCode);//$oOrder->oxorder__oxtrackcode->value
 
         $request = $xml->asXML();
         $response = $this->sendShipmentRequest($request);
@@ -133,17 +133,17 @@ class rakuten_shiporder extends rakuten_shiporder_parent
             /** Getting response from server **/
             $response = curl_exec($ch);
 
-            if(curl_errno($ch)) {               
+            if(curl_errno($ch)) {
                 throw new Exception(curl_error($ch), curl_errno($ch));
             } else {
                 curl_close($ch);
             }
-        } catch (Exception $e) {           
+        } catch (Exception $e) {
             oxUtilsView::getInstance()->addErrorToDisplay(sprintf('CURL Error #%s: %s', $e->getCode(), $e->getMessage()));
             return false;
         }
-        
-		return $response;
+
+        return $response;
     }
 
     /**

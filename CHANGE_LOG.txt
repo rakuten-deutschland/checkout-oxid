@@ -1,3 +1,32 @@
+Release Notes for Rakuten Checkout ver. 1.0.8
+----------------------------------------------
+09.08.2012
+
+*** Bug Fixes ***
+(COE-6) OXUSERID in table oxorder is empty
+
+Release Notes for Rakuten Checkout ver. 1.0.7
+----------------------------------------------
+08.08.2012
+
+*** Bug Fixes ***
+(COE-28)  In admin -> Shop Settings -> Rakuten Checkout there is a vertical scrollbar incorrectly displayed
+
+Release Notes for Rakuten Checkout ver. 1.0.6
+----------------------------------------------
+11.07.2012
+
+*** Bug Fixes ***
+(COE-22)  Errors within order status received from an Oxid eshop
+
+Release Notes for Rakuten Checkout ver. 1.0.5
+----------------------------------------------
+22.06.2012
+
+*** Bug Fixes ***
+(COE-17)  Shipment information is not being sent to Rakuten Checkout
+(COE-22)  Errors within order status received from an Oxid eshop
+
 Release Notes for Rakuten Checkout ver. 1.0.4
 ----------------------------------------------
 15.05.2012
